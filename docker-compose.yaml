@@ -1,0 +1,49 @@
+version: "3"
+
+services:
+  rabbitmq:
+    image: 'rabbitmq:3-management'
+    container_name: javaee_rabbitmq
+    restart: always
+    hostname: rabbitmq
+    ports:
+      - "15672:15672"
+      - "5672:5672"
+    volumes:
+    - ./rabbitmqdata:/var/lib/rabbitmq/mnesia/
+    environment:
+      - RABBITMQ_DEFAULT_USER=admin
+      - RABBITMQ_DEFAULT_PASS=admin
+      
+  postgres_db_postage:
+    image: postgres:10
+    container_name: javaee_postgres_postage
+    environment:
+      - POSTGRES_DB=postage
+      - POSTGRES_USER=postage
+      - POSTGRES_PASSWORD=postage
+      - TZ=GMT
+    ports:
+      - 5441:5432
+
+  postgres_db_email:
+    image: postgres:10
+    container_name: postgres_db_email
+    environment:
+      - POSTGRES_DB=email
+      - POSTGRES_USER=email
+      - POSTGRES_PASSWORD=email
+      - TZ=GMT
+    ports:
+      - 5442:5432
+
+  postgres_db_tracking:
+    image: postgres:10
+    container_name: javaee_postgres_tracking
+    environment:
+      - POSTGRES_DB=tracking
+      - POSTGRES_USER=tracking
+      - POSTGRES_PASSWORD=tracking
+      - TZ=GMT
+    ports:
+      - 5443:5432
